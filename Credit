@@ -1,0 +1,133 @@
+#include <cs50.h>
+#include <stdio.h>
+#include <math.h>
+
+long get_number(string s)
+{
+    long num;
+    do
+    {
+        num = get_long("Number: %s", s);
+    }
+    while (num <= 0);
+    return num;
+}
+
+int get_sum(long l)
+{
+    int digits = (int) log10(l) + 1;
+    int n, prod, sum = 0;
+    long m = l;
+    for (int i = digits - 1; i >= 0; i -= 2)
+    {
+        while (m >= pow (10, i))
+        {
+            m /= 10;
+        }
+        n = (int) (m % 10);
+        prod = n * 2;
+        if (prod >= 10)
+        {
+            sum += ((prod / 10) + (prod % 10));
+        }
+        else
+        {
+            sum += prod;
+        }
+    }
+    m = l;
+    for (int i = digits; i >= 0; i -= 2)
+    {
+        while (m >= pow (10, i))
+        {
+            m /= 10;
+        }
+        n = (int) (m % 10);
+        sum += n;
+    }
+    return sum;
+}
+
+string validate_card (long l)
+{
+    string card;
+    int sum = 0;
+    int digits = (int) log10(l) + 1;
+    switch(digits)
+    {
+        case 13:
+                if (l >= 4000000000000 && l <= 4999999999999)
+                {
+                    sum = get_sum(l);
+                    if ((sum % 10) == 0)
+                    {
+                        card = "VISA";
+                    }
+                    else
+                    {
+                        card = "INVALID";
+                    }
+                }
+                else
+                {
+                    card = "INVALID";
+                }
+                break;
+        case 15:
+                if (((l >= 340000000000000) && (l <= 349999999999999)) || ((l >= 370000000000000) && (l <= 379999999999999)))
+                {
+                    sum = get_sum(l);
+                    if ((sum % 10) == 0)
+                    {
+                        card = "AMEX";
+                    }
+                    else
+                    {
+                        card = "INVALID";
+                    }
+                }
+                else
+                {
+                    card = "INVALID";
+                }
+                break;
+        case 16:
+                if (l >= 4000000000000000 && l <= 4999999999999999)
+                {
+                    sum = get_sum(l);
+                    if ((sum % 10) == 0)
+                    {
+                        card = "VISA";
+                    }
+                    else
+                    {
+                        card = "INVALID";
+                    }
+                }
+                else if (l >= 5100000000000000 && l <= 5599999999999999)
+                {
+                    sum = get_sum(l);
+                    if ((sum % 10) == 0)
+                    {
+                        card = "MASTERCARD";
+                    }
+                    else
+                    {
+                        card = "INVALID";
+                    }
+                }
+                else
+                {
+                    card = "INVALID";
+                }
+                break;
+        default:
+                card = "INVALID";
+    }
+    return card;
+}
+
+int main(void)
+{
+    printf("%s\n", validate_card(get_number("")));
+}
