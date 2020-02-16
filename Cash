@@ -1,0 +1,44 @@
+#include <cs50.h>
+#include <stdio.h>
+#include <math.h>
+
+float get_change(string s)
+{
+    float f;
+    do
+    {
+        f = get_float("Change owed: %s", s);
+    }
+    while (f <= 0);
+    return f;
+}
+
+int get_coins (int rest)
+{
+    int coin = 0;
+    if (rest >= 25)
+    {
+        coin += rest / 25;
+        rest %= 25;
+    }
+    if (rest >= 10)
+    {
+        coin += rest / 10;
+        rest %= 10;
+    }
+    if (rest >= 5)
+    {
+        coin += rest / 5;
+        rest %= 5;
+    }
+    if (rest >= 1)
+    {
+        coin += rest;
+    }
+    return coin;
+}
+
+int main(void)
+{
+    printf("%i\n", get_coins(round(get_change("") * 100)));
+}
