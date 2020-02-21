@@ -1,0 +1,93 @@
+#include <cs50.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+int shift(char c);
+
+int main(int argc, string argv[])
+{
+    if (argc == 2)
+    {
+        string keyword;
+        for (int i = 0; i < strlen(argv[1]); i++)
+        {
+            if (isalpha(argv[1][i]) != 0)
+            {
+                keyword = argv[1];
+            }
+            else
+            {
+                printf("Usage: ./vigenere keyword\n");
+                return 1;
+            }
+        }
+        string text = get_string("plaintext:  ");
+        printf("ciphertext: ");
+        int keys[strlen(keyword)];
+        for (int i = 0; i < strlen(keyword); i++)
+        {
+            keys[i] = shift(argv[1][i]);
+        }
+        int j = 0;
+        for (int i = 0; i < strlen(text); i++)
+        {
+            if (j == (strlen(keyword)))
+            {
+                j = 0;
+            }
+            if (isalpha(text[i]) != 0)
+            {
+                if (isupper(text[i]) != 0)
+                {
+                    printf("%c", ((text[i] - 65 + keys[j]) % 26) + 65);
+                    j++;
+                }
+                else if (islower(text[i]) != 0)
+                {
+                    printf("%c", ((text[i] - 97 + keys[j]) % 26) + 97);
+                    j++;
+                }
+            }
+            else
+            {
+                printf("%c", text[i]);
+            }
+        }
+        printf("\n");
+    }
+    else
+    {
+        printf("Usage: ./vigenere keyword\n");
+        return 1;
+    }
+}
+
+int shift(char c)
+{
+    int n;
+    char let[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+    for (int i = 0; i < strlen(let); i++)
+    {
+        if (isupper(c) != 0)
+        {
+            if (c == let[i])
+            {
+                n = i;
+            }
+        }
+        else if (islower(c) != 0)
+        {
+            if (c == (let[i] + 32))
+            {
+                n = i;
+            }
+        }
+        else
+        {
+            n = 0;
+        }
+    }
+    return n;
+}
